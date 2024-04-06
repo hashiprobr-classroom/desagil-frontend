@@ -1,18 +1,37 @@
+/*
+ * NÃO MUDE NADA A MENOS QUE TENHA UM BOM MOTIVO.
+ * E, mesmo que tenha, confirme com o professor.
+ */
+
+import { NextResponse } from 'next/server';
 import { authMiddleware } from '@clerk/nextjs';
 
-// See https://clerk.com/docs/references/nextjs/auth-middleware
-// for more information about configuring your Middleware
+function redirect(path, req) {
+    const url = new URL(path, req.url);
+    return NextResponse.redirect(url);
+}
+
 export default authMiddleware({
-    // Allow signed out users to access the specified routes:
-    // publicRoutes: ['/anyone-can-visit-this-route'],
+    publicRoutes: [
+        '/',
+        '/sign-in',
+        '/sign-up',
+    ],
+
+    afterAuth(auth, req) {
+        if (auth.userId) {
+            if (auth.isPublicRoute) {
+                return redirect('/main', req);
+            }
+        } else {
+            if (!auth.isPublicRoute) {
+                return redirect('/sign-in', req);
+            }
+        }
+        return NextResponse.next();
+    },
 });
 
 export const config = {
-    matcher: [
-        // Exclude files with a "." followed by an extension, which are typically static files.
-        // Exclude files in the _next directory, which are Next.js internals.
-        '/((?!.+\\.[\\w]+$|_next).*)',
-        // Re-include any files in the api or trpc folders that might have an extension
-        '/(api|trpc)(.*)'
-    ]
+    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/(api|trpc)(.*)'],
 };

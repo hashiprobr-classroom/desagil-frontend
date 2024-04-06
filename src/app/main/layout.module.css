@@ -14,31 +14,37 @@
     font-weight: bold;
 }
 
-.auth {
+.auth, .auth:active {
     margin-top: 1.5rem;
-}
-
-.auth a {
-    text-wrap: nowrap;
-}
-
-.signIn {
-    margin-right: 1rem;
-}
-
-.signUp {
+    border-width: 0;
     border-radius: .5rem;
     padding: .5rem;
     background-color: var(--background-color);
     color: var(--foreground-color);
+    font-size: 1rem;
     font-weight: bold;
 }
 
 .main {
     flex-grow: 1;
+    align-self: center;
+    width: min(var(--max-width), 100%);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
+}
+
+.paragraphs p {
+    margin-bottom: 1rem;
+}
+
+.paragraphs p:first-child {
+    font-weight: bold;
+}
+
+.paragraphs p:not(:first-child) {
+    text-decoration: underline;
 }
 
 /* Blocos específicos para largura de tablet. */
@@ -48,10 +54,10 @@
         flex-direction: row;
     }
 
-    .auth {
+    .auth, .auth:active {
         margin-top: 0;
     }
- }
+}
 
 /* Blocos específicos para largura de desktop. */
 
